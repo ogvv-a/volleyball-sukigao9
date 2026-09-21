@@ -570,8 +570,8 @@
         }
 
         function setupNextMerge() {
-            // ソート完了チェック
-            if (parentList.length === 1 && curA.length === 0 && curB.length === 0) {
+            // ソート完了チェック（次ラウンド用nextParentListが空である条件を追加し早期終了バグを修正）
+            if (parentList.length === 1 && nextParentList.length === 0 && curA.length === 0 && curB.length === 0) {
                 showRankingResult(parentList[0]);
                 return;
             }
