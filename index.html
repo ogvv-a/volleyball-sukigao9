@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUZIGAO 9 - 男子バレーボール日本代表版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .stage-title {
+            color: #667eea;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-small {
+            padding: 10px 25px;
+            font-size: 14px;
+        }
+
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .player-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .player-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .player-card.selected {
+            border-color: #667eea;
+            background: #e8eaff;
+        }
+
+        .player-card.ranked {
+            border-color: #764ba2;
+            background: #f0e6ff;
+        }
+
+        .player-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 10px;
+            display: block;
+            background: #ddd;
+        }
+
+        .player-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .player-team {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .player-rank {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .instruction {
+            color: #666;
+            font-size: 14px;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .progress {
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .results-list {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .result-rank {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+            width: 40px;
+            text-align: center;
+        }
+
+        .result-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 15px;
+            background: #ddd;
+        }
+
+        .result-info {
+            flex: 1;
+        }
+
+        .result-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .result-team {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .stage-title {
+                font-size: 20px;
+            }
+
+            .players-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HOME SCREEN -->
+        <div id="home-screen">
+            <h1>🏐 SUKIGAO 9</h1>
+            <p class="subtitle">男子バレーボール日本代表版</p>
+            <div style="margin: 40px 0;">
+                <p class="instruction">
+                    46人の選手から、<br>
+                    <strong>「顔だけ」</strong>で直感的に選んで、<br>
+                    あなただけの<strong>TOP9</strong>を決めよう！
+                </p>
+            </div>
+            <button class="btn" onclick="startGame()">START</button>
+        </div>
+
+        <!-- PRELIMINARY SCREEN -->
+        <div id="preliminary-screen" class="hidden">
+            <div class="stage-title">PRELIMINARY</div>
+            <div class="progress" id="preliminary-progress"></div>
+            <p class="instruction">この中で「好きな顔」を1人選んでください</p>
+            <div class="players-grid" id="preliminary-players"></div>
+            <div class="nav-buttons">
+                <button class="btn btn-small" onclick="prevStage()" id="preliminary-prev">前へ</button>
+                <button class="btn btn-small" onclick="nextPreliminary()" id="preliminary-next">次へ</button>
+            </div>
+        </div>
+
+        <!-- MAIN ROUND SCREEN -->
+        <div id="main-round-screen" class="hidden">
+            <div class="stage-title">MAIN ROUND</div>
+            <div class="progress" id="main-round-progress"></div>
+            <p class="instruction">「好きな顔」を<strong>1位→2位</strong>の順に選んでください</p>
+            <div class="players-grid" id="main-round-players"></div>
+            <div class="nav-buttons">
+                <button class="btn btn-small" onclick="prevStage()" id="main-round-prev">前へ</button>
+                <button class="btn btn-small" onclick="nextMainRound()" id="main-round-next">次へ</button>
+            </div>
+        </div>
+
+        <!-- LAST BATTLE SCREEN -->
+        <div id="last-battle-screen" class="hidden">
+            <div class="stage-title">LAST BATTLE</div>
+            <div class="progress" id="last-battle-progress"></div>
+            <p class="instruction">「どっちの顔が好き？」選んでください</p>
+            <div class="players-grid" id="last-battle-players" style="grid-template-columns: 1fr 1fr;"></div>
+            <div class="nav-buttons">
+                <button class="btn btn-small" onclick="prevStage()" id="last-battle-prev">前へ</button>
+                <button class="btn btn-small" onclick="nextLastBattle()" id="last-battle-next">次へ</button>
+            </div>
+        </div>
+
+        <!-- FINALISTS SCREEN -->
+        <div id="finalists-screen" class="hidden">
+            <div class="stage-title">FINALISTS</div>
+            <p class="instruction">最終候補者<strong>18名</strong>が決定しました！</p>
+            <div class="players-grid" id="finalists-players" style="grid-template-columns: repeat(3, 1fr);"></div>
+            <button class="btn" onclick="startFinalRound()" style="margin-top: 20px;">FINAL ROUND へ</button>
+        </div>
+
+        <!-- FINAL ROUND SCREEN -->
+        <div id="final-round-screen" class="hidden">
+            <div class="stage-title">FINAL ROUND</div>
+            <div class="progress" id="final-round-progress"></div>
+            <p class="instruction">「好きな顔」を選んでください</p>
+            <div class="players-grid" id="final-round-players" style="grid-template-columns: 1fr 1fr;"></div>
+            <div class="nav-buttons">
+                <button class="btn btn-small" onclick="prevStage()" id="final-round-prev">前へ</button>
+                <button class="btn btn-small" onclick="nextFinalRound()" id="final-round-next">次へ</button>
+            </div>
+        </div>
+
+        <!-- RANKING SCREEN -->
+        <div id="ranking-screen" class="hidden">
+            <div class="stage-title">YOUR SUKIGAO 9</div>
+            <p class="instruction">あなただけの TOP9 が決定しました！</p>
+            <div class="results-list" id="ranking-results"></div>
+            <button class="btn" onclick="location.reload()" style="margin-top: 20px;">もう一度遊ぶ</button>
+        </div>
+    </div>
+
+    <script>
+        // 選手データ（46名）
+        const allPlayers = [
+            {id: 1, name: "西田 有志", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Nishida&backgroundColor=b6e3f4"},
+            {id: 2, name: "小野寺 太志", team: "サントリーサンバーズ大阪", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Onodera&backgroundColor=c0aede"},
+            {id: 3, name: "深津 英臣", team: "ウルフドッグス名古屋", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fukatsu&backgroundColor=d1d4f9"},
+            {id: 4, name: "宮浦 健人", team: "ウルフドッグス名古屋", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Miyaura&backgroundColor=ffd5dc"},
+            {id: 5, name: "大塚 達宣", team: "パワーバレー・ミラノ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Otsuka&backgroundColor=c0aede"},
+            {id: 6, name: "山内 晶大", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Yamauchi&backgroundColor=b6e3f4"},
+            {id: 7, name: "新井 雄大", team: "広島サンダーズ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arai&backgroundColor=d1d4f9"},
+            {id: 8, name: "関田 誠大", team: "ジェイテクトSTINGS愛知", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sekita&backgroundColor=ffd5dc"},
+            {id: 9, name: "大宅 真樹", team: "サントリーサンバーズ大阪", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Oyake&backgroundColor=c0aede"},
+            {id: 10, name: "髙橋 健太郎", team: "ジェイテクトSTINGS愛知", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=TakahashiK&backgroundColor=b6e3f4"},
+            {id: 11, name: "富田 将馬", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Tomita&backgroundColor=d1d4f9"},
+            {id: 12, name: "髙橋 藍", team: "ボクダンカ・LUK・ルブリン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=TakahashiR&backgroundColor=ffd5dc"},
+            {id: 13, name: "小川 智大", team: "ボクダンカ・LUK・ルブリン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ogawa&backgroundColor=c0aede"},
+            {id: 14, name: "石川 祐希", team: "ジラート・バンク・アンカラ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ishikawa&backgroundColor=b6e3f4"},
+            {id: 15, name: "甲斐 優斗", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Kai&backgroundColor=d1d4f9"},
+            {id: 16, name: "村山 豪", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Murayama&backgroundColor=ffd5dc"},
+            {id: 17, name: "西本 圭吾", team: "広島サンダーズ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Nishimoto&backgroundColor=c0aede"},
+            {id: 18, name: "西山 大翔", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Nishiyama&backgroundColor=b6e3f4"},
+            {id: 19, name: "高橋 和幸", team: "ジェイテクトSTINGS愛知", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=TakahashiKz&backgroundColor=d1d4f9"},
+            {id: 20, name: "山本 智大", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=YamamotoT&backgroundColor=ffd5dc"},
+            {id: 21, name: "永露 元稀", team: "ウルフドッグス名古屋", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Nagatsuyu&backgroundColor=c0aede"},
+            {id: 22, name: "藤中 颯志", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fujinaka&backgroundColor=b6e3f4"},
+            {id: 23, name: "エバデダン ラリー", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Evadedan&backgroundColor=d1d4f9"},
+            {id: 24, name: "高橋 慶帆", team: "ジェイテクトSTINGS愛知", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=TakahashiK&backgroundColor=ffd5dc"},
+            {id: 25, name: "下川 諒", team: "サントリーサンバーズ大阪", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Shimokawa&backgroundColor=c0aede"},
+            {id: 26, name: "山崎 彰都", team: "東京グレートベアーズ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Yamazaki&backgroundColor=b6e3f4"},
+            {id: 27, name: "垂水 優芽", team: "アラゴ・セット", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Taruizu&backgroundColor=d1d4f9"},
+            {id: 28, name: "麻野 堅斗", team: "早稲田大学", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Asano&backgroundColor=ffd5dc"},
+            {id: 29, name: "三輪 大将", team: "広島サンダーズ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Miwa&backgroundColor=c0aede"},
+            {id: 30, name: "西川 馨太郎", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Nishikawa&backgroundColor=b6e3f4"},
+            {id: 31, name: "今橋 祐希", team: "ウルフドッグス名古屋", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Imahashi&backgroundColor=d1d4f9"},
+            {id: 33, name: "髙木 啓士郎", team: "東京グレートベアーズ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Takagi&backgroundColor=ffd5dc"},
+            {id: 34, name: "後藤 陸翔", team: "東京グレートベアーズ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Goto&backgroundColor=c0aede"},
+            {id: 35, name: "工藤 有史", team: "信州松本トライデンツ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Kudo&backgroundColor=b6e3f4"},
+            {id: 36, name: "水町 泰杜", team: "ウルフドッグス名古屋", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mizumachi&backgroundColor=d1d4f9"},
+            {id: 37, name: "伊藤 吏玖", team: "東京グレートベアーズ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ito&backgroundColor=ffd5dc"},
+            {id: 38, name: "山田 大貴", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Yamada&backgroundColor=c0aede"},
+            {id: 39, name: "牧 大晃", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maki&backgroundColor=b6e3f4"},
+            {id: 40, name: "竹松 魁柊", team: "ウルフドッグス名古屋", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Takematsu&backgroundColor=d1d4f9"},
+            {id: 41, name: "川野 琢磨", team: "東京グレートベアーズ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Kawano&backgroundColor=ffd5dc"},
+            {id: 42, name: "森 愛樹", team: "ジェイテクトSTINGS愛知", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mori&backgroundColor=c0aede"},
+            {id: 43, name: "安井 恒介", team: "東京グレートベアーズ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Yasui&backgroundColor=b6e3f4"},
+            {id: 44, name: "山本 龍", team: "大韓航空", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=YamamotoR&backgroundColor=d1d4f9"},
+            {id: 45, name: "柳田 将洋", team: "東京グレートベアーズ", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Yanagita&backgroundColor=ffd5dc"},
+            {id: 46, name: "清水 邦広", team: "大阪ブルテオン", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Shimizu&backgroundColor=c0aede"},
+            {id: 47, name: "高橋 塁", team: "サントリーサンバーズ大阪", image: "https://api.dicebear.com/7.x/avataaars/svg?seed=TakahashiR&backgroundColor=b6e3f4"},
+        ];
+
+        // ゲーム状態
+        let currentStage = 'home';
+        let preliminaryGroups = [];
+        let preliminaryCurrentGroup = 0;
+        let preliminaryWinners = [];
+        let mainRoundGroups = [];
+        let mainRoundCurrentGroup = 0;
+        let mainRoundRankings = [];
+        let lastBattlePairs = [];
+        let lastBattleCurrentPair = 0;
+        let lastBattleWinners = [];
+        let finalists = [];
+        let finalRoundPairs = [];
+        let finalRoundCurrentPair = 0;
+        let finalRoundWinners = [];
+        let top9 = [];
+
+        // シャッフル関数
+        function shuffle(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // ゲーム開始
+        function startGame() {
+            // 予選グループ作成（4人×�12グループ = 48人、46人なので最後は2人）
+            const shuffled = shuffle(allPlayers);
+            preliminaryGroups = [];
+            for (let i = 0; i < shuffled.length; i += 4) {
+                preliminaryGroups.push(shuffled.slice(i, i + 4));
+            }
+
+            showScreen('preliminary-screen');
+            currentStage = 'preliminary';
+            renderPreliminary();
+        }
+
+        // 画面表示切り替え
+        function showScreen(screenId) {
+            document.querySelectorAll('.container > div').forEach(div => {
+                div.classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        // 予選画面表示
+        function renderPreliminary() {
+            const group = preliminaryGroups[preliminaryCurrentGroup];
+            const container = document.getElementById('preliminary-players');
+            container.innerHTML = '';
+
+            document.getElementById('preliminary-progress').textContent = 
+                `グループ ${preliminaryCurrentGroup + 1} / ${preliminaryGroups.length}`;
+
+            group.forEach(player => {
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.innerHTML = `
+                    <img src="${player.image}" alt="${player.name}" class="player-image">
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-team">${player.team}</div>
+                `;
+                card.onclick = () => selectPreliminary(player);
+                container.appendChild(card);
+            });
+
+            document.getElementById('preliminary-prev').disabled = preliminaryCurrentGroup === 0;
+        }
+
+        // 予選選択
+        function selectPreliminary(player) {
+            preliminaryWinners.push(player);
+            preliminaryCurrentGroup++;
+
+            if (preliminaryCurrentGroup >= preliminaryGroups.length) {
+                startMainRound();
+            } else {
+                renderPreliminary();
+            }
+        }
+
+        // MAIN ROUND 開始
+        function startMainRound() {
+            const shuffled = shuffle(preliminaryWinners);
+            mainRoundGroups = [];
+            for (let i = 0; i < shuffled.length; i += 4) {
+                mainRoundGroups.push(shuffled.slice(i, i + 4));
+            }
+
+            showScreen('main-round-screen');
+            currentStage = 'main-round';
+            renderMainRound();
+        }
+
+        // MAIN ROUND 画面表示
+        function renderMainRound() {
+            const group = mainRoundGroups[mainRoundCurrentGroup];
+            const container = document.getElementById('main-round-players');
+            container.innerHTML = '';
+
+            document.getElementById('main-round-progress').textContent = 
+                `グループ ${mainRoundCurrentGroup + 1} / ${mainRoundGroups.length}`;
+
+            group.forEach(player => {
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.innerHTML = `
+                    <img src="${player.image}" alt="${player.name}" class="player-image">
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-team">${player.team}</div>
+                `;
+                card.onclick = () => selectMainRound(player, card);
+                container.appendChild(card);
+            });
+
+            document.getElementById('main-round-prev').disabled = mainRoundCurrentGroup === 0;
+            document.getElementById('main-round-next').disabled = true;
+        }
+
+        // MAIN ROUND 選択
+        let mainRoundTempSelections = [];
+        function selectMainRound(player, card) {
+            if (mainRoundTempSelections.find(p => p.id === player.id)) return;
+
+            mainRoundTempSelections.push(player);
+            card.classList.add('ranked');
+
+            if (mainRoundTempSelections.length === 2) {
+                mainRoundRankings.push({
+                    group: mainRoundCurrentGroup,
+                    rankings: [...mainRoundTempSelections]
+                });
+                mainRoundTempSelections = [];
+                mainRoundCurrentGroup++;
+
+                if (mainRoundCurrentGroup >= mainRoundGroups.length) {
+                    startLastBattle();
+                } else {
+                    renderMainRound();
+                }
+            }
+        }
+
+        // LAST BATTLE 開始
+        function startLastBattle() {
+            // MAIN ROUND の勝者から 24 人を選出
+            const candidates = [];
+            mainRoundRankings.forEach(r => {
+                candidates.push(r.rankings[0], r.rankings[1]);
+            });
+
+            const shuffled = shuffle(candidates).slice(0, 24);
+
+            // 2人ずつペアにして対戦
+            lastBattlePairs = [];
+            for (let i = 0; i < shuffled.length; i += 2) {
+                lastBattlePairs.push(shuffled.slice(i, i + 2));
+            }
+
+            showScreen('last-battle-screen');
+            currentStage = 'last-battle';
+            renderLastBattle();
+        }
+
+        // LAST BATTLE 画面表示
+        function renderLastBattle() {
+            const pair = lastBattlePairs[lastBattleCurrentPair];
+            const container = document.getElementById('last-battle-players');
+            container.innerHTML = '';
+
+            document.getElementById('last-battle-progress').textContent = 
+                `${lastBattleCurrentPair + 1} / ${lastBattlePairs.length}`;
+
+            pair.forEach(player => {
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.innerHTML = `
+                    <img src="${player.image}" alt="${player.name}" class="player-image">
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-team">${player.team}</div>
+                `;
+                card.onclick = () => selectLastBattle(player);
+                container.appendChild(card);
+            });
+
+            document.getElementById('last-battle-prev').disabled = lastBattleCurrentPair === 0;
+        }
+
+        // LAST BATTLE 選択
+        function selectLastBattle(player) {
+            lastBattleWinners.push(player);
+            lastBattleCurrentPair++;
+
+            if (lastBattleCurrentPair >= lastBattlePairs.length) {
+                showFinalists();
+            } else {
+                renderLastBattle();
+            }
+        }
+
+        // FINALISTS 表示
+        function showFinalists() {
+            // 18 人に絞る
+            finalists = lastBattleWinners.slice(0, 18);
+
+            showScreen('finalists-screen');
+            currentStage = 'finalists';
+
+            const container = document.getElementById('finalists-players');
+            container.innerHTML = '';
+
+            finalists.forEach(player => {
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.innerHTML = `
+                    <img src="${player.image}" alt="${player.name}" class="player-image">
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-team">${player.team}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // FINAL ROUND 開始
+        function startFinalRound() {
+            finalRoundPairs = [];
+            const shuffled = shuffle(finalists);
+
+            // 9組の対戦（18人）
+            for (let i = 0; i < shuffled.length; i += 2) {
+                finalRoundPairs.push(shuffled.slice(i, i + 2));
+            }
+
+            showScreen('final-round-screen');
+            currentStage = 'final-round';
+            renderFinalRound();
+        }
+
+        // FINAL ROUND 画面表示
+        function renderFinalRound() {
+            const pair = finalRoundPairs[finalRoundCurrentPair];
+            const container = document.getElementById('final-round-players');
+            container.innerHTML = '';
+
+            document.getElementById('final-round-progress').textContent = 
+                `${finalRoundCurrentPair + 1} / ${finalRoundPairs.length}`;
+
+            pair.forEach(player => {
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                card.innerHTML = `
+                    <img src="${player.image}" alt="${player.name}" class="player-image">
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-team">${player.team}</div>
+                `;
+                card.onclick = () => selectFinalRound(player);
+                container.appendChild(card);
+            });
+
+            document.getElementById('final-round-prev').disabled = finalRoundCurrentPair === 0;
+        }
+
+        // FINAL ROUND 選択
+        function selectFinalRound(player) {
+            finalRoundWinners.push(player);
+            finalRoundCurrentPair++;
+
+            if (finalRoundCurrentPair >= finalRoundPairs.length) {
+                showRanking();
+            } else {
+                renderFinalRound();
+            }
+        }
+
+        // 結果画面表示
+        function showRanking() {
+            // 9 人をシャッフルして TOP9 表示
+            top9 = shuffle(finalRoundWinners).slice(0, 9);
+
+            showScreen('ranking-screen');
+            currentStage = 'ranking';
+
+            const container = document.getElementById('ranking-results');
+            container.innerHTML = '';
+
+            top9.forEach((player, index) => {
+                const item = document.createElement('div');
+                item.className = 'result-item';
+                item.innerHTML = `
+                    <div class="result-rank">${index + 1}</div>
+                    <img src="${player.image}" alt="${player.name}" class="result-image">
+                    <div class="result-info">
+                        <div class="result-name">${player.name}</div>
+                        <div class="result-team">${player.team}</div>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // 前へボタン
+        function prevStage() {
+            if (currentStage === 'preliminary' && preliminaryCurrentGroup > 0) {
+                preliminaryCurrentGroup--;
+                renderPreliminary();
+            } else if (currentStage === 'main-round' && mainRoundCurrentGroup > 0) {
+                mainRoundCurrentGroup--;
+                mainRoundTempSelections = [];
+                renderMainRound();
+            } else if (currentStage === 'last-battle' && lastBattleCurrentPair > 0) {
+                lastBattleCurrentPair--;
+                lastBattleWinners.pop();
+                renderLastBattle();
+            } else if (currentStage === 'final-round' && finalRoundCurrentPair > 0) {
+                finalRoundCurrentPair--;
+                finalRoundWinners.pop();
+                renderFinalRound();
+            }
+        }
+
+        // 次へボタン（予選）
+        function nextPreliminary() {
+            // 何もしない（選択必須）
+        }
+
+        // 次へボタン（MAIN ROUND）
+        function nextMainRound() {
+            // 何もしない（選択必須）
+        }
+
+        // 次へボタン（LAST BATTLE）
+        function nextLastBattle() {
+            // 何もしない（選択必須）
+        }
+
+        // 次へボタン（FINAL ROUND）
+        function nextFinalRound() {
+            // 何もしない（選択必須）
+        }
+    </script>
+</body>
+</html>
