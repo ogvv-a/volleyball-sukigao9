@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUKIGAO 9 - 龍神NIPPON🏐版</title>
+    <title>MY 好き顔 9選 - 🇯🇵龍神NIPPON🏐 ver.</title>
     <style>
         :root {
-            --primary: #f43f5e;
-            --primary-dark: #be123c;
-            --bg-dark: #0f172a;
-            --card-bg: #1e293b;
-            --card-item: #334155;
-            --text-light: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-gold: #eab308;
+            --primary-red: #d90429;       /* 日本赤 */
+            --primary-darkred: #7a0016;   /* えんじ色 */
+            --bg-page: #f8fafc;
+            --card-bg: #ffffff;
+            --card-item: #f1f5f9;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --accent-gold: #d97706;
+            --japan-black: #111827;
         }
 
         * {
@@ -24,37 +25,73 @@
 
         body {
             font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
+            background-color: var(--bg-page);
+            /* 白黒×日本赤のドットパターン */
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(217, 4, 41, 0.05) 0%, transparent 60%),
+                radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 100% 100%, 24px 24px;
+            color: var(--text-dark);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 15px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 🏐 バレーボール絵文字の薄い背景装飾 */
+        body::before {
+            content: "🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐";
+            position: fixed;
+            top: -20px;
+            left: -20px;
+            width: 120vw;
+            height: 120vh;
+            font-size: 3rem;
+            opacity: 0.04;
+            word-break: break-all;
+            pointer-events: none;
+            line-height: 1.8;
+            z-index: 0;
+            transform: rotate(-10deg);
         }
 
         .container {
+            position: relative;
+            z-index: 1;
             width: 100%;
-            max-width: 650px;
+            max-width: 620px;
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 25px 20px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            border-radius: 24px;
+            padding: 30px 24px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12), 0 1px 3px rgba(0,0,0,0.05);
+            border-top: 6px solid var(--primary-red);
             text-align: center;
         }
 
         h1 {
-            color: var(--primary);
+            color: var(--japan-black);
             font-size: 2.2rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
         }
 
         .subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
+            color: var(--primary-red);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .desc-text {
+            color: #334155;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            font-weight: 700;
             margin-bottom: 25px;
         }
 
@@ -72,51 +109,54 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ボタン */
+        /* 赤〜えんじ色（日本国旗・代表イメージ）ボタン */
         .btn-group {
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-top: 20px;
+            margin-top: 25px;
             flex-wrap: wrap;
         }
 
         .btn {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: #fff;
+            background: linear-gradient(135deg, var(--primary-red), var(--primary-darkred));
+            color: #ffffff;
             border: none;
-            padding: 14px 28px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 30px;
+            padding: 16px 38px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-radius: 35px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.25s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 8px 18px rgba(217, 4, 41, 0.35);
+            letter-spacing: 1px;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(244, 63, 94, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(217, 4, 41, 0.45);
         }
 
         .btn-secondary {
             background: #475569;
-        }
-
-        .btn-secondary:hover {
-            background: #64748b;
             box-shadow: none;
         }
 
-        /* 選手カード（共通画像枠） */
+        .btn-secondary:hover {
+            background: #334155;
+            box-shadow: none;
+        }
+
+        /* 選手画像枠（縦長 3:4） */
         .player-image-box {
             width: 100%;
-            aspect-ratio: 3 / 4; /* 丸型から縦長ポスター風に変更 */
+            aspect-ratio: 3 / 4;
             border-radius: 12px;
             overflow: hidden;
-            background: #0f172a;
+            background: #e2e8f0;
             margin-bottom: 8px;
             position: relative;
         }
@@ -140,21 +180,22 @@
             background: var(--card-item);
             border-radius: 14px;
             padding: 8px;
-            border: 2px solid transparent;
+            border: 2px solid #e2e8f0;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         .player-name {
-            font-weight: bold;
+            font-weight: 800;
             font-size: 0.95rem;
-            color: var(--text-light);
+            color: var(--japan-black);
         }
 
         .player-pos {
             font-size: 0.75rem;
             color: var(--text-muted);
+            font-weight: 600;
         }
 
         /* 対戦画面 */
@@ -162,49 +203,50 @@
             display: flex;
             align-items: center;
             justify-content: space-around;
-            gap: 12px;
+            gap: 14px;
             margin: 20px 0;
         }
 
         .vs-card {
             flex: 1;
-            background: var(--card-item);
-            border-radius: 16px;
+            background: #ffffff;
+            border-radius: 18px;
             padding: 12px;
             cursor: pointer;
-            border: 3px solid transparent;
+            border: 3px solid #e2e8f0;
             transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
         }
 
         .vs-card:hover {
-            border-color: var(--primary);
+            border-color: var(--primary-red);
             transform: scale(1.03);
+            box-shadow: 0 10px 22px rgba(217, 4, 41, 0.15);
         }
 
         .vs-card .player-image-box {
-            max-height: 280px; /* 大画面時も収まりを保つ上限値 */
+            max-height: 280px;
         }
 
         .vs-divider {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 900;
-            color: var(--primary);
+            color: var(--primary-red);
             font-style: italic;
         }
 
         .progress-bar-container {
             width: 100%;
-            height: 8px;
-            background: #334155;
-            border-radius: 4px;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
             overflow: hidden;
             margin: 15px 0;
         }
 
         .progress-bar {
             height: 100%;
-            background: var(--primary);
+            background: linear-gradient(90deg, var(--primary-red), var(--primary-darkred));
             width: 0%;
             transition: width 0.3s ease;
         }
@@ -223,26 +265,27 @@
             align-items: center;
             background: var(--card-item);
             padding: 10px 15px;
-            border-radius: 12px;
+            border-radius: 14px;
             gap: 15px;
+            border: 1px solid #e2e8f0;
         }
 
         .rank-badge {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            background: #475569;
+            background: #64748b;
             color: #fff;
-            font-weight: bold;
+            font-weight: 900;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 1.05rem;
             flex-shrink: 0;
         }
 
-        .rank-1 .rank-badge { background: var(--accent-gold); color: #000; }
-        .rank-2 .rank-badge { background: #94a3b8; color: #000; }
+        .rank-1 .rank-badge { background: var(--accent-gold); color: #fff; }
+        .rank-2 .rank-badge { background: #94a3b8; color: #fff; }
         .rank-3 .rank-badge { background: #b45309; color: #fff; }
 
         .rank-info {
@@ -251,8 +294,9 @@
         }
 
         .rank-name {
-            font-weight: bold;
-            font-size: 1rem;
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: var(--japan-black);
         }
 
         .rank-pos {
@@ -266,7 +310,7 @@
             border-radius: 6px;
             overflow: hidden;
             flex-shrink: 0;
-            background: #0f172a;
+            background: #cbd5e1;
         }
 
         .rank-image-box svg,
@@ -280,25 +324,30 @@
 <body>
 
     <div class="container">
-        <h1>SUKIGAO 9</h1>
-        <p class="subtitle">男子バレーボール日本代表 顔・推し順位決定戦</p>
+        <!-- タイトル・サブタイトル -->
+        <h1>MY 好き顔 9選</h1>
+        <p class="subtitle">🇯🇵龍神NIPPON🏐 ver.</p>
 
         <!-- HOME SCREEN -->
         <div id="screen-home" class="screen active">
-            <p style="margin-bottom: 15px; color: #cbd5e1;">エントリーする日本代表メンバー9名</p>
+            <!-- 説明文 -->
+            <p class="desc-text">
+                全46人の選手から、<br>
+                あなたの「好き顔」TOP9を決めよう！
+            </p>
             <div id="initial-grid" class="grid"></div>
             <div class="btn-group">
-                <button class="btn" onclick="startGame()">診断を始める</button>
+                <button class="btn" onclick="startGame()">START</button>
             </div>
         </div>
 
         <!-- MATCH SCREEN -->
         <div id="screen-match" class="screen">
-            <h2 id="match-stage-title" style="color: #38bdf8; font-size: 1.2rem;">2択比較</h2>
+            <h2 id="match-stage-title" style="color: var(--primary-red); font-size: 1.2rem; font-weight: 800;">2択比較</h2>
             <div class="progress-bar-container">
                 <div id="progress-bar" class="progress-bar"></div>
             </div>
-            <p id="match-counter" style="font-size: 0.85rem; color: var(--text-muted);">Match 1</p>
+            <p id="match-counter" style="font-size: 0.85rem; color: var(--text-muted); font-weight: bold;">Match 1</p>
 
             <div class="versus-wrapper">
                 <div id="vs-card-a" class="vs-card" onclick="selectWinner(0)">
@@ -323,8 +372,8 @@
 
         <!-- FINALISTS SCREEN -->
         <div id="screen-finalists" class="screen">
-            <h2>ファイナリスト決定！</h2>
-            <p style="margin: 10px 0 20px; color: #cbd5e1;">全マッチの選択が完了しました。最終順位を確認します。</p>
+            <h2 style="color: var(--japan-black);">診断完了！</h2>
+            <p class="desc-text" style="margin-top: 15px;">あなただけのTOP9ランキングが決定しました。</p>
             <div class="btn-group">
                 <button class="btn" onclick="startFinalRound()">結果を見る</button>
             </div>
@@ -332,28 +381,27 @@
 
         <!-- RANKING SCREEN -->
         <div id="screen-ranking" class="screen">
-            <h2 style="color: var(--accent-gold);">あなたの SUKIGAO 9 結果</h2>
+            <h2 style="color: var(--primary-red); font-size: 1.6rem; font-weight: 900;">MY 好き顔 TOP9</h2>
             <ul id="ranking-list" class="ranking-list"></ul>
 
             <div class="btn-group">
-                <button class="btn" onclick="resetGame()">もう一度プレイ</button>
+                <button class="btn" onclick="resetGame()">もう一度やり直す</button>
             </div>
         </div>
     </div>
 
     <script>
-        // 日本代表選手データ
-        // ※ 実際の画像を使う場合は imgSrc: "https://example.com/photo.jpg" のように追加できます
+        // 日本代表選手データ（拡張用）
         const PLAYERS = [
-            { id: 1, name: "石川 祐希", pos: "OH / Cap", num: "14", color: "#ef4444" },
-            { id: 2, name: "髙橋 藍", pos: "OH", num: "12", color: "#3b82f6" },
-            { id: 3, name: "西田 有志", pos: "OP", num: "1", color: "#10b981" },
-            { id: 4, name: "山内 晶大", pos: "MB", num: "6", color: "#f59e0b" },
-            { id: 5, name: "小野寺 太志", pos: "MB", num: "2", color: "#8b5cf6" },
-            { id: 6, name: "関田 誠大", pos: "S", num: "8", color: "#ec4899" },
-            { id: 7, name: "山本 智大", pos: "L", num: "20", color: "#06b6d4" },
-            { id: 8, name: "宮浦 健人", pos: "OP", num: "4", color: "#84cc16" },
-            { id: 9, name: "甲斐 優斗", pos: "OH", num: "15", color: "#f97316" }
+            { id: 1, name: "石川 祐希", pos: "OH / Cap", num: "14", color: "#d90429" },
+            { id: 2, name: "髙橋 藍", pos: "OH", num: "12", color: "#1e3a8a" },
+            { id: 3, name: "西田 有志", pos: "OP", num: "1", color: "#111827" },
+            { id: 4, name: "山内 晶大", pos: "MB", num: "6", color: "#d90429" },
+            { id: 5, name: "小野寺 太志", pos: "MB", num: "2", color: "#1e3a8a" },
+            { id: 6, name: "関田 誠大", pos: "S", num: "8", color: "#111827" },
+            { id: 7, name: "山本 智大", pos: "L", num: "20", color: "#d90429" },
+            { id: 8, name: "宮浦 健人", pos: "OP", num: "4", color: "#1e3a8a" },
+            { id: 9, name: "甲斐 優斗", pos: "OH", num: "15", color: "#111827" }
         ];
 
         let comparisonQueue = [];
@@ -362,22 +410,18 @@
         let currentPair = [];
         let scores = {};
 
-        // 縦長カード用アバターSVG（3:4画角に最適化）
+        // ユニフォーム風SVG画像（赤・濃紺・黒）
         function createAvatarSVG(player) {
             if (player.imgSrc) {
                 return `<img src="${player.imgSrc}" alt="${player.name}">`;
             }
             return `
                 <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="300" height="400" fill="${player.color}"/>
-                    <!-- 髪・頭部 -->
-                    <circle cx="150" cy="140" r="75" fill="#1e293b"/>
-                    <!-- 顔 -->
-                    <circle cx="150" cy="155" r="60" fill="#ffedd5"/>
-                    <!-- 体／ユニフォーム -->
-                    <path d="M 60 400 L 90 260 L 210 260 L 240 400 Z" fill="#0f172a"/>
-                    <!-- 背番号 -->
-                    <text x="150" y="340" font-size="52" font-weight="900" text-anchor="middle" fill="#ffffff" font-family="sans-serif">${player.num}</text>
+                    <rect width="300" height="400" fill="#f8fafc"/>
+                    <circle cx="150" cy="135" r="75" fill="#1e293b"/>
+                    <circle cx="150" cy="150" r="60" fill="#ffedd5"/>
+                    <path d="M 50 400 L 85 250 L 215 250 L 250 400 Z" fill="${player.color}"/>
+                    <text x="150" y="340" font-size="56" font-weight="900" text-anchor="middle" fill="#ffffff" font-family="sans-serif">${player.num}</text>
                 </svg>
             `;
         }
