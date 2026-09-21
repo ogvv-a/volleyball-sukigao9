@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUKIGAO 9 - 男子バレーボール日本代表版</title>
+    <title>SUKIGAO 9 - 龍神NIPPON🏐版</title>
     <style>
         :root {
             --primary: #f43f5e;
@@ -31,7 +31,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 15px;
         }
 
         .container {
@@ -39,7 +39,7 @@
             max-width: 650px;
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 30px 20px;
+            padding: 25px 20px;
             box-shadow: 0 15px 30px rgba(0,0,0,0.5);
             text-align: center;
         }
@@ -72,7 +72,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 共通ボタン */
+        /* ボタン */
         .btn-group {
             display: flex;
             justify-content: center;
@@ -110,43 +110,40 @@
             box-shadow: none;
         }
 
-        /* 選手グリッド */
+        /* 選手カード（共通画像枠） */
+        .player-image-box {
+            width: 100%;
+            aspect-ratio: 3 / 4; /* 丸型から縦長ポスター風に変更 */
+            border-radius: 12px;
+            overflow: hidden;
+            background: #0f172a;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .player-image-box svg,
+        .player-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 初期画面グリッド */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 12px;
             margin: 20px 0;
-        }
-
-        @media (max-width: 480px) {
-            .grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 10px;
-            }
         }
 
         .player-card {
             background: var(--card-item);
-            border-radius: 12px;
-            padding: 10px;
+            border-radius: 14px;
+            padding: 8px;
             border: 2px solid transparent;
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-
-        .player-avatar {
-            width: 100%;
-            aspect-ratio: 1;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-bottom: 8px;
-            background: #0f172a;
-        }
-
-        .player-avatar svg {
-            width: 100%;
-            height: 100%;
         }
 
         .player-name {
@@ -165,23 +162,28 @@
             display: flex;
             align-items: center;
             justify-content: space-around;
-            gap: 15px;
-            margin: 25px 0;
+            gap: 12px;
+            margin: 20px 0;
         }
 
         .vs-card {
             flex: 1;
             background: var(--card-item);
             border-radius: 16px;
-            padding: 18px 10px;
+            padding: 12px;
             cursor: pointer;
             border: 3px solid transparent;
             transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         .vs-card:hover {
             border-color: var(--primary);
-            transform: scale(1.04);
+            transform: scale(1.03);
+        }
+
+        .vs-card .player-image-box {
+            max-height: 280px; /* 大画面時も収まりを保つ上限値 */
         }
 
         .vs-divider {
@@ -258,17 +260,20 @@
             color: var(--text-muted);
         }
 
-        .rank-avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
+        .rank-image-box {
+            width: 48px;
+            aspect-ratio: 3 / 4;
+            border-radius: 6px;
             overflow: hidden;
             flex-shrink: 0;
+            background: #0f172a;
         }
 
-        .rank-avatar svg {
+        .rank-image-box svg,
+        .rank-image-box img {
             width: 100%;
             height: 100%;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -287,18 +292,17 @@
             </div>
         </div>
 
-        <!-- MATCH SCREEN (PRELIMINARY / MAIN / FINAL ROUND) -->
+        <!-- MATCH SCREEN -->
         <div id="screen-match" class="screen">
             <h2 id="match-stage-title" style="color: #38bdf8; font-size: 1.2rem;">2択比較</h2>
             <div class="progress-bar-container">
                 <div id="progress-bar" class="progress-bar"></div>
             </div>
             <p id="match-counter" style="font-size: 0.85rem; color: var(--text-muted);">Match 1</p>
-            <p style="margin: 10px 0; font-size: 1.1rem; font-weight: bold;">好みの顔・推しを選んでください</p>
 
             <div class="versus-wrapper">
                 <div id="vs-card-a" class="vs-card" onclick="selectWinner(0)">
-                    <div id="vs-avatar-a" class="player-avatar"></div>
+                    <div id="vs-avatar-a" class="player-image-box"></div>
                     <div id="vs-name-a" class="player-name">--</div>
                     <div id="vs-pos-a" class="player-pos">--</div>
                 </div>
@@ -306,7 +310,7 @@
                 <div class="vs-divider">VS</div>
 
                 <div id="vs-card-b" class="vs-card" onclick="selectWinner(1)">
-                    <div id="vs-avatar-b" class="player-avatar"></div>
+                    <div id="vs-avatar-b" class="player-image-box"></div>
                     <div id="vs-name-b" class="player-name">--</div>
                     <div id="vs-pos-b" class="player-pos">--</div>
                 </div>
@@ -320,9 +324,9 @@
         <!-- FINALISTS SCREEN -->
         <div id="screen-finalists" class="screen">
             <h2>ファイナリスト決定！</h2>
-            <p style="margin: 10px 0 20px; color: #cbd5e1;">いよいよ上位・下位の最終順位を確定します。</p>
+            <p style="margin: 10px 0 20px; color: #cbd5e1;">全マッチの選択が完了しました。最終順位を確認します。</p>
             <div class="btn-group">
-                <button class="btn" onclick="startFinalRound()">最終ラウンドへ進む</button>
+                <button class="btn" onclick="startFinalRound()">結果を見る</button>
             </div>
         </div>
 
@@ -338,9 +342,10 @@
     </div>
 
     <script>
-        // 日本代表選手データ（軽量なSVGアバター付き）
+        // 日本代表選手データ
+        // ※ 実際の画像を使う場合は imgSrc: "https://example.com/photo.jpg" のように追加できます
         const PLAYERS = [
-            { id: 1, name: "石川 祐希", pos: "OH / Cap", num: "1", color: "#ef4444" },
+            { id: 1, name: "石川 祐希", pos: "OH / Cap", num: "14", color: "#ef4444" },
             { id: 2, name: "髙橋 藍", pos: "OH", num: "12", color: "#3b82f6" },
             { id: 3, name: "西田 有志", pos: "OP", num: "1", color: "#10b981" },
             { id: 4, name: "山内 晶大", pos: "MB", num: "6", color: "#f59e0b" },
@@ -355,26 +360,33 @@
         let currentMatchIndex = 0;
         let sortedPlayers = [];
         let currentPair = [];
+        let scores = {};
 
-        // SVGアバター生成
+        // 縦長カード用アバターSVG（3:4画角に最適化）
         function createAvatarSVG(player) {
+            if (player.imgSrc) {
+                return `<img src="${player.imgSrc}" alt="${player.name}">`;
+            }
             return `
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="100" height="100" fill="${player.color}"/>
-                    <circle cx="50" cy="38" r="22" fill="#ffedd5"/>
-                    <path d="M25 90 C25 65 75 65 75 90 Z" fill="#1e293b"/>
-                    <text x="50" y="44" font-size="14" font-weight="bold" text-anchor="middle" fill="#334155">${player.num}</text>
+                <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="300" height="400" fill="${player.color}"/>
+                    <!-- 髪・頭部 -->
+                    <circle cx="150" cy="140" r="75" fill="#1e293b"/>
+                    <!-- 顔 -->
+                    <circle cx="150" cy="155" r="60" fill="#ffedd5"/>
+                    <!-- 体／ユニフォーム -->
+                    <path d="M 60 400 L 90 260 L 210 260 L 240 400 Z" fill="#0f172a"/>
+                    <!-- 背番号 -->
+                    <text x="150" y="340" font-size="52" font-weight="900" text-anchor="middle" fill="#ffffff" font-family="sans-serif">${player.num}</text>
                 </svg>
             `;
         }
 
-        // 初期化＆画面表示切替
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
         }
 
-        // 初期表示用カード一覧の生成
         function initHomeScreen() {
             const grid = document.getElementById('initial-grid');
             grid.innerHTML = '';
@@ -382,7 +394,7 @@
                 const card = document.createElement('div');
                 card.className = 'player-card';
                 card.innerHTML = `
-                    <div class="player-avatar">${createAvatarSVG(p)}</div>
+                    <div class="player-image-box">${createAvatarSVG(p)}</div>
                     <div class="player-name">${p.name}</div>
                     <div class="player-pos">${p.pos}</div>
                 `;
@@ -390,7 +402,6 @@
             });
         }
 
-        // 比較ペアのリスト作成（効率的な総当たり形式）
         function generateComparisons() {
             let pairs = [];
             for (let i = 0; i < PLAYERS.length; i++) {
@@ -398,16 +409,12 @@
                     pairs.push([PLAYERS[i], PLAYERS[j]]);
                 }
             }
-            // ランダムにシャッフル
             for (let i = pairs.length - 1; i > 0; i--) {
                 const r = Math.floor(Math.random() * (i + 1));
                 [pairs[i], pairs[r]] = [pairs[r], pairs[i]];
             }
-            // スムーズな体験のため12試合を選択抽出
             return pairs.slice(0, 12);
         }
-
-        let scores = {};
 
         function startGame() {
             scores = {};
@@ -430,7 +437,7 @@
             document.getElementById('match-counter').innerText = `Match ${currentMatchIndex + 1} / ${total}`;
 
             currentPair = comparisonQueue[currentMatchIndex];
-            
+
             document.getElementById('vs-avatar-a').innerHTML = createAvatarSVG(currentPair[0]);
             document.getElementById('vs-name-a').innerText = currentPair[0].name;
             document.getElementById('vs-pos-a').innerText = currentPair[0].pos;
@@ -461,7 +468,6 @@
         }
 
         function startFinalRound() {
-            // スコア順にソート
             sortedPlayers = [...PLAYERS].sort((a, b) => scores[b.id] - scores[a.id]);
             renderRanking();
             showScreen('screen-ranking');
@@ -476,7 +482,7 @@
                 li.className = `ranking-item rank-${idx + 1}`;
                 li.innerHTML = `
                     <div class="rank-badge">${idx + 1}</div>
-                    <div class="rank-avatar">${createAvatarSVG(player)}</div>
+                    <div class="rank-image-box">${createAvatarSVG(player)}</div>
                     <div class="rank-info">
                         <div class="rank-name">${player.name}</div>
                         <div class="rank-pos">${player.pos}</div>
@@ -490,7 +496,6 @@
             showScreen('screen-home');
         }
 
-        // 初期化実行
         window.onload = function() {
             initHomeScreen();
         };
