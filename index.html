@@ -26,7 +26,6 @@
         body {
             font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
             background-color: var(--bg-page);
-            /* 白黒×日本赤のドットパターン */
             background-image: 
                 radial-gradient(circle at 50% 50%, rgba(217, 4, 41, 0.05) 0%, transparent 60%),
                 radial-gradient(#cbd5e1 1px, transparent 1px);
@@ -42,7 +41,7 @@
             overflow-x: hidden;
         }
 
-        /* 🏐 バレーボール絵文字の薄い背景装飾 */
+        /* 🏐 バレーボール絵文字の背景装飾 */
         body::before {
             content: "🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐 🏐";
             position: fixed;
@@ -63,10 +62,10 @@
             position: relative;
             z-index: 1;
             width: 100%;
-            max-width: 620px;
+            max-width: 520px;
             background: var(--card-bg);
             border-radius: 24px;
-            padding: 30px 24px;
+            padding: 40px 24px;
             box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12), 0 1px 3px rgba(0,0,0,0.05);
             border-top: 6px solid var(--primary-red);
             text-align: center;
@@ -84,7 +83,7 @@
             color: var(--primary-red);
             font-size: 1.1rem;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .desc-text {
@@ -92,7 +91,7 @@
             font-size: 1.05rem;
             line-height: 1.6;
             font-weight: 700;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .screen {
@@ -109,12 +108,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 赤〜えんじ色（日本国旗・代表イメージ）ボタン */
         .btn-group {
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-top: 25px;
+            margin-top: 10px;
             flex-wrap: wrap;
         }
 
@@ -122,8 +120,8 @@
             background: linear-gradient(135deg, var(--primary-red), var(--primary-darkred));
             color: #ffffff;
             border: none;
-            padding: 16px 38px;
-            font-size: 1.1rem;
+            padding: 16px 48px;
+            font-size: 1.2rem;
             font-weight: 800;
             border-radius: 35px;
             cursor: pointer;
@@ -143,6 +141,8 @@
         .btn-secondary {
             background: #475569;
             box-shadow: none;
+            padding: 12px 28px;
+            font-size: 0.95rem;
         }
 
         .btn-secondary:hover {
@@ -150,7 +150,7 @@
             box-shadow: none;
         }
 
-        /* 選手画像枠（縦長 3:4） */
+        /* 選手画像枠 */
         .player-image-box {
             width: 100%;
             aspect-ratio: 3 / 4;
@@ -159,41 +159,26 @@
             background: #e2e8f0;
             margin-bottom: 8px;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .player-image-box svg,
         .player-image-box img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        /* 初期画面グリッド */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 20px 0;
-        }
-
-        .player-card {
-            background: var(--card-item);
-            border-radius: 14px;
-            padding: 8px;
-            border: 2px solid #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: block;
         }
 
         .player-name {
             font-weight: 800;
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--japan-black);
         }
 
-        .player-pos {
-            font-size: 0.75rem;
+        .player-team {
+            font-size: 0.8rem;
             color: var(--text-muted);
             font-weight: 600;
         }
@@ -299,7 +284,7 @@
             color: var(--japan-black);
         }
 
-        .rank-pos {
+        .rank-team {
             font-size: 0.8rem;
             color: var(--text-muted);
         }
@@ -313,7 +298,6 @@
             background: #cbd5e1;
         }
 
-        .rank-image-box svg,
         .rank-image-box img {
             width: 100%;
             height: 100%;
@@ -330,12 +314,10 @@
 
         <!-- HOME SCREEN -->
         <div id="screen-home" class="screen active">
-            <!-- 説明文 -->
             <p class="desc-text">
                 全46人の選手から、<br>
                 あなたの「好き顔」TOP9を決めよう！
             </p>
-            <div id="initial-grid" class="grid"></div>
             <div class="btn-group">
                 <button class="btn" onclick="startGame()">START</button>
             </div>
@@ -353,7 +335,7 @@
                 <div id="vs-card-a" class="vs-card" onclick="selectWinner(0)">
                     <div id="vs-avatar-a" class="player-image-box"></div>
                     <div id="vs-name-a" class="player-name">--</div>
-                    <div id="vs-pos-a" class="player-pos">--</div>
+                    <div id="vs-team-a" class="player-team">--</div>
                 </div>
 
                 <div class="vs-divider">VS</div>
@@ -361,7 +343,7 @@
                 <div id="vs-card-b" class="vs-card" onclick="selectWinner(1)">
                     <div id="vs-avatar-b" class="player-image-box"></div>
                     <div id="vs-name-b" class="player-name">--</div>
-                    <div id="vs-pos-b" class="player-pos">--</div>
+                    <div id="vs-team-b" class="player-team">--</div>
                 </div>
             </div>
 
@@ -391,17 +373,56 @@
     </div>
 
     <script>
-        // 日本代表選手データ（拡張用）
+        // -------------------------------------------------------------
+        // ご提示いただいた選手データをそのまま使用
+        // -------------------------------------------------------------
         const PLAYERS = [
-            { id: 1, name: "石川 祐希", pos: "OH / Cap", num: "14", color: "#d90429" },
-            { id: 2, name: "髙橋 藍", pos: "OH", num: "12", color: "#1e3a8a" },
-            { id: 3, name: "西田 有志", pos: "OP", num: "1", color: "#111827" },
-            { id: 4, name: "山内 晶大", pos: "MB", num: "6", color: "#d90429" },
-            { id: 5, name: "小野寺 太志", pos: "MB", num: "2", color: "#1e3a8a" },
-            { id: 6, name: "関田 誠大", pos: "S", num: "8", color: "#111827" },
-            { id: 7, name: "山本 智大", pos: "L", num: "20", color: "#d90429" },
-            { id: 8, name: "宮浦 健人", pos: "OP", num: "4", color: "#1e3a8a" },
-            { id: 9, name: "甲斐 優斗", pos: "OH", num: "15", color: "#111827" }
+            { id: 1, name: "西田 有志", team: "大阪ブルテオン", image: "1.jpg.jpg" },
+            { id: 2, name: "小野寺 太志", team: "サントリーサンバーズ大阪", image: "2.jpg.jpg" },
+            { id: 3, name: "深津 英臣", team: "ウルフドッグス名古屋", image: "3.jpg.jpg" },
+            { id: 4, name: "宮浦 健人", team: "ウルフドッグス名古屋", image: "4.jpg.jpg" },
+            { id: 5, name: "大塚 達宣", team: "パワーバレー・ミラノ", image: "5.jpg.jpg" },
+            { id: 6, name: "山内 晶大", team: "大阪ブルテオン", image: "6.jpg.jpg" },
+            { id: 7, name: "新井 雄大", team: "広島サンダーズ", image: "7.jpg.jpg" },
+            { id: 8, name: "関田 誠大", team: "ジェイテクトSTINGS愛知", image: "8.jpg.jpg" },
+            { id: 9, name: "河東 祐大", team: "ジェイテクトSTINGS愛知", image: "9.jpg.jpg" },
+            { id: 10, name: "髙橋 健太郎", team: "ジェイテクトSTINGS愛知", image: "10.jpg.jpg" },
+            { id: 11, name: "富田 将馬", team: "大阪ブルテオン", image: "11.jpg.jpg" },
+            { id: 12, name: "高橋 藍", team: "ボグダンカ・LUK・ルブリン", image: "12.jpg.jpg" },
+            { id: 13, name: "小川 智大", team: "ボグダンカ・LUK・ルブリン", image: "13.jpg.jpg" },
+            { id: 14, name: "石川 祐希", team: "ジラート・バンク・アンカラ", image: "14.jpg.jpg" },
+            { id: 15, name: "甲斐 優斗", team: "大阪ブルテオン", image: "15.jpg.jpg" },
+            { id: 16, name: "村山 豪", team: "大阪ブルテオン", image: "16.jpg.jpg" },
+            { id: 17, name: "西本 圭吾", team: "広島サンダーズ", image: "17.jpg.jpg" },
+            { id: 18, name: "西山 大翔", team: "大阪ブルテオン", image: "18.jpg.jpg" },
+            { id: 19, name: "高橋 和幸", team: "ジェイテクトSTINGS愛知", image: "19.jpg.jpg" },
+            { id: 20, name: "山本 智大", team: "大阪ブルテオン", image: "20.jpg.jpg" },
+            { id: 21, name: "永露 元稀", team: "ウルフドッグス名古屋", image: "21.jpg.jpg" },
+            { id: 22, name: "藤中 颯志", team: "大阪ブルテオン", image: "22.jpg.jpg" },
+            { id: 23, name: "エバデダン ラリー", team: "大阪ブルテオン", image: "23.jpg.jpg" },
+            { id: 24, name: "高橋 慶帆", team: "ジェイテクトSTINGS愛知", image: "24.jpg.jpg" },
+            { id: 25, name: "下川 諒", team: "サントリーサンバーズ大阪", image: "25.jpg.jpg" },
+            { id: 26, name: "山崎 彰都", team: "東京グレートベアーズ", image: "26.jpg.jpg" },
+            { id: 27, name: "垂水 優芽", team: "アラゴ・セット", image: "27.jpg.jpg" },
+            { id: 28, name: "麻野 堅斗", team: "早稲田大学", image: "28.jpg.jpg" },
+            { id: 29, name: "三輪 大将", team: "広島サンダーズ", image: "29.jpg.jpg" },
+            { id: 30, name: "西川 馨太郎", team: "大阪ブルテオン", image: "30.jpg.jpg" },
+            { id: 31, name: "今橋 祐希", team: "ウルフドッグス名古屋", image: "31.jpg.jpg" },
+            { id: 32, name: "高木 啓士郎", team: "東京グレートベアーズ", image: "32.jpg.jpg" },
+            { id: 34, name: "後藤 陸翔", team: "東京グレートベアーズ", image: "34.jpg.jpg" },
+            { id: 35, name: "工藤 有史", team: "信州松本トライデンツ", image: "35.jpg.jpg" },
+            { id: 36, name: "水町 泰杜", team: "ウルフドッグス名古屋", image: "36.jpg.jpg" },
+            { id: 37, name: "伊藤 吏玖", team: "東京グレートベアーズ", image: "37.jpg.jpg" },
+            { id: 38, name: "山田 大貴", team: "大阪ブルテオン", image: "38.jpg.jpg" },
+            { id: 39, name: "牧 大晃", team: "大阪ブルテオン", image: "39.jpg.jpg" },
+            { id: 40, name: "竹松 魁柊", team: "ウルフドッグス名古屋", image: "40.jpg.jpg" },
+            { id: 41, name: "川野 琢磨", team: "東京グレートベアーズ", image: "41.jpg.jpg" },
+            { id: 42, name: "森 愛樹", team: "ジェイテクトSTINGS愛知", image: "42.jpg.jpg" },
+            { id: 43, name: "安井 恒介", team: "東京グレートベアーズ", image: "43.jpg.jpg" },
+            { id: 44, name: "山本 龍", team: "大韓航空", image: "44.jpg.jpg" },
+            { id: 45, name: "柳田 将洋", team: "東京グレートベアーズ", image: "45.jpg.jpg" },
+            { id: 46, name: "清水 邦広", team: "大阪ブルテオン", image: "46.jpg.jpg" },
+            { id: 47, name: "髙橋 塁", team: "サントリーサンバーズ大阪", image: "47.jpg.jpg" }
         ];
 
         let comparisonQueue = [];
@@ -410,40 +431,13 @@
         let currentPair = [];
         let scores = {};
 
-        // ユニフォーム風SVG画像（赤・濃紺・黒）
-        function createAvatarSVG(player) {
-            if (player.imgSrc) {
-                return `<img src="${player.imgSrc}" alt="${player.name}">`;
-            }
-            return `
-                <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="300" height="400" fill="#f8fafc"/>
-                    <circle cx="150" cy="135" r="75" fill="#1e293b"/>
-                    <circle cx="150" cy="150" r="60" fill="#ffedd5"/>
-                    <path d="M 50 400 L 85 250 L 215 250 L 250 400 Z" fill="${player.color}"/>
-                    <text x="150" y="340" font-size="56" font-weight="900" text-anchor="middle" fill="#ffffff" font-family="sans-serif">${player.num}</text>
-                </svg>
-            `;
+        function renderPlayerImage(player) {
+            return `<img src="${player.image}" alt="${player.name}">`;
         }
 
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
-        }
-
-        function initHomeScreen() {
-            const grid = document.getElementById('initial-grid');
-            grid.innerHTML = '';
-            PLAYERS.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'player-card';
-                card.innerHTML = `
-                    <div class="player-image-box">${createAvatarSVG(p)}</div>
-                    <div class="player-name">${p.name}</div>
-                    <div class="player-pos">${p.pos}</div>
-                `;
-                grid.appendChild(card);
-            });
         }
 
         function generateComparisons() {
@@ -457,7 +451,7 @@
                 const r = Math.floor(Math.random() * (i + 1));
                 [pairs[i], pairs[r]] = [pairs[r], pairs[i]];
             }
-            return pairs.slice(0, 12);
+            return pairs.slice(0, 15);
         }
 
         function startGame() {
@@ -482,13 +476,13 @@
 
             currentPair = comparisonQueue[currentMatchIndex];
 
-            document.getElementById('vs-avatar-a').innerHTML = createAvatarSVG(currentPair[0]);
+            document.getElementById('vs-avatar-a').innerHTML = renderPlayerImage(currentPair[0]);
             document.getElementById('vs-name-a').innerText = currentPair[0].name;
-            document.getElementById('vs-pos-a').innerText = currentPair[0].pos;
+            document.getElementById('vs-team-a').innerText = currentPair[0].team;
 
-            document.getElementById('vs-avatar-b').innerHTML = createAvatarSVG(currentPair[1]);
+            document.getElementById('vs-avatar-b').innerHTML = renderPlayerImage(currentPair[1]);
             document.getElementById('vs-name-b').innerText = currentPair[1].name;
-            document.getElementById('vs-pos-b').innerText = currentPair[1].pos;
+            document.getElementById('vs-team-b').innerText = currentPair[1].team;
         }
 
         function selectWinner(selectedIndex) {
@@ -521,15 +515,17 @@
             const list = document.getElementById('ranking-list');
             list.innerHTML = '';
 
-            sortedPlayers.forEach((player, idx) => {
+            const top9 = sortedPlayers.slice(0, 9);
+
+            top9.forEach((player, idx) => {
                 const li = document.createElement('li');
                 li.className = `ranking-item rank-${idx + 1}`;
                 li.innerHTML = `
                     <div class="rank-badge">${idx + 1}</div>
-                    <div class="rank-image-box">${createAvatarSVG(player)}</div>
+                    <div class="rank-image-box">${renderPlayerImage(player)}</div>
                     <div class="rank-info">
                         <div class="rank-name">${player.name}</div>
-                        <div class="rank-pos">${player.pos}</div>
+                        <div class="rank-team">${player.team}</div>
                     </div>
                 `;
                 list.appendChild(li);
@@ -539,10 +535,6 @@
         function resetGame() {
             showScreen('screen-home');
         }
-
-        window.onload = function() {
-            initHomeScreen();
-        };
     </script>
 </body>
 </html>
